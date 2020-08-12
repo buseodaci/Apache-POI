@@ -1,8 +1,5 @@
 
 import org.apache.poi.hslf.HSLFSlideShow;
-import org.apache.poi.hslf.model.Sheet;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -16,19 +13,15 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xslf.usermodel.XMLSlideShow;
 import org.apache.poi.xslf.usermodel.XSLFSlide;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlString;
-import org.openxmlformats.schemas.drawingml.x2006.main.STSystemColorVal;
 import org.openxmlformats.schemas.presentationml.x2006.main.CTSlide;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +35,11 @@ public class ApachePOITest {
         keywords.put("Country", "Ülke");
         keywords.put("Age", "26");
         keywords.put("Female", "Kadın");
-        readAndReplaceWord("src\\main\\resources\\file-sample-xls.xls", keywords);
+        keywords.put("Template", "Taslak");
+        keywords.put("document", "BUSE");
+        keywords.put("or", "ODACI");
+        keywords.put("IEEE", "EHIEHI");
+        readAndReplaceWord("src\\main\\resources\\file-sample-doc.doc", keywords);
     }
 
     public static void readAndReplaceWord(String inputFile, Map<String, String> keywords) {
@@ -93,24 +90,13 @@ public class ApachePOITest {
                     }
                     doc.write(new FileOutputStream(inputFile));
                 } else if (extension.equals(".doc")) {
-                    /*System.out.println(is);
-                    HWPFDocument doc = new HWPFDocument(is);
+                    POIFSFileSystem fs = null;
+                    fs = new POIFSFileSystem(new FileInputStream(inputFile));
+                    HWPFDocument doc = new HWPFDocument(fs);
                     Range range = doc.getRange();
                     System.out.println(range);
-                    for (int r = 0; r < range.numCharacterRuns(); r++) {
-                        CharacterRun run = range.getCharacterRun(r);
-                        String text = run.text();
-                        if (text.contains(i)) {
-                            run.replaceText(i, keywords.get(i));
-                        }
-                    }
-                    doc.write(new FileOutputStream(inputFile));*/
-                    /*POIFSFileSystem fs = null;
-                    fs = new POIFSFileSystem(is);
-                    HWPFDocument doc = new HWPFDocument(fs);
-                    Range r1 = doc.getRange();
-                    for (int b = 0; b < r1.numSections(); ++b) {
-                        Section s = r1.getSection(b);
+                    for (int y = 0; y < range.numSections(); ++y) {
+                        Section s = range.getSection(y);
                         for (int x = 0; x < s.numParagraphs(); x++) {
                             Paragraph p = s.getParagraph(x);
                             for (int z = 0; z < p.numCharacterRuns(); z++) {
@@ -122,7 +108,7 @@ public class ApachePOITest {
                             }
                         }
                     }
-                    doc.write(new FileOutputStream(inputFile));*/
+                    doc.write(new FileOutputStream(inputFile));
                 } else if (extension.equals(".xlsx")) {
                     XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream(inputFile));
                     DataFormatter formatter = new DataFormatter();
@@ -137,7 +123,6 @@ public class ApachePOITest {
                     }
                     xssfWorkbook.write(new FileOutputStream(inputFile));
                 } else if (extension.equals(".xls")) {
-                    DataFormatter formatter = new DataFormatter();
                     HSSFWorkbook hssfWorkbook = new HSSFWorkbook(new FileInputStream(inputFile));
                     HSSFSheet sheet = hssfWorkbook.getSheetAt(0);
                     for (Row row : sheet) {
