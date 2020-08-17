@@ -31,6 +31,17 @@
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>3.12</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.odftoolkit/odfdom-java -->
+        <dependency>
+            <groupId>org.odftoolkit</groupId>
+            <artifactId>odfdom-java</artifactId>
+            <version>0.8.7</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.docx4j/docx4j -->
+        <dependency>
+            <groupId>org.docx4j</groupId>
+            <artifactId>docx4j</artifactId>
+            <version>6.1.2</version>
+        </dependency>
     </dependencies>
 </project>
